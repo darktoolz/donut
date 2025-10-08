@@ -26,7 +26,8 @@ RUN rm -rf generators .git .github /var/lib/apt /var/cache /var/log/apt /var/log
         /var/lib/dpkg* /usr/libexec/dpkg* /usr/share/doc /usr/share/man /var/log/alt* \
         /root/.cache /root/.config /root/go /usr/lib/go-1.24 /usr/share/go-1.24
 
-FROM builder AS donut
+FROM scratch
+COPY --from=builder / /
 ARG SOURCE_DATE_EPOCH
 
 WORKDIR /workdir
