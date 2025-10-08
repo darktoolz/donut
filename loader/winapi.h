@@ -76,6 +76,12 @@
           LPCCH                              lpDefaultChar,
           LPBOOL                             lpUsedDefaultChar);
 
+    typedef BOOL (WINAPI *FlushInstructionCache_t)(
+      HANDLE hProcess,
+      LPCVOID lpBaseAddress,
+      SIZE_T dwSize
+    );
+
     typedef LPWSTR* (WINAPI *CommandLineToArgvW_t)(LPCWSTR lpCmdLine, int* pNumArgs);
 
     typedef HANDLE (WINAPI *GetCurrentProcess_t)();
@@ -210,6 +216,17 @@
       BOOL                  bInitialState,
       LPCSTR                lpName);
 
+<<<<<<< HEAD
+=======
+    typedef BOOL  (WINAPI *CloseHandle_t)(HANDLE hObject);
+
+    typedef DWORD (WINAPI *GetModuleFileName_t)(
+      HMODULE               hModule,
+      LPSTR                 lpFilename,
+      DWORD                 nSize
+    );
+
+>>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
     typedef BOOL  (WINAPI *SetEvent_t)(HANDLE hEvent);
 
     typedef DWORD (WINAPI *GetCurrentThreadId_t)(VOID);
@@ -519,11 +536,18 @@
 
     typedef HANDLE (WINAPI *GetCurrentThread_t)(VOID);
     
-    /*
-    typedef PVOID (WINAPI *AddVectoredExceptionHandler_t)(
+    typedef BOOL (WINAPI *ReadProcessMemory_t)(
+      HANDLE  hProcess,
+      LPCVOID lpBaseAddress,
+      LPVOID  lpBuffer,
+      SIZE_T  nSize,
+      SIZE_T  *lpNumberOfBytesRead
+    );
+    
+    /*typedef PVOID (WINAPI *AddVectoredExceptionHandler_t)(
       ULONG                       First,
       PVECTORED_EXCEPTION_HANDLER Handler);
-
+    
     typedef ULONG (WINAPI *RemoveVectoredExceptionHandler_t)(
       PVOID                       Handle);
     */

