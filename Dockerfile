@@ -9,7 +9,7 @@ RUN chmod ugo+wrx /workdir
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install --no-install-recommends --no-install-suggests -y \
       ca-certificates zip wget curl xml2 python3 ruby \
-      mingw-w64 g++ go libssl-dev build-essential \
+      mingw-w64 g++ golang libssl-dev build-essential \
       git make pkg-config automake libtool autotools-dev
 
 FROM builder AS donut
