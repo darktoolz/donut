@@ -29,6 +29,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #include <stdio.h>
 #include <tlhelp32.h>
@@ -131,3 +132,4 @@ int main(int argc, char *argv[]){
     free(code);
     return 0;
 }
+#endif

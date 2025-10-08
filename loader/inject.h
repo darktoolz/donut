@@ -36,7 +36,6 @@
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "user32.lib")
 #endif
-#endif
 
 #include <stdio.h>
 #include <tlhelp32.h>
@@ -57,3 +56,5 @@ typedef NTSTATUS (NTAPI *RtlCreateUserThread_t) (
     IN  PVOID StartParameter OPTIONAL,
     OUT PHANDLE ThreadHandle,
     OUT PCLIENT_ID ClientID);
+
+#endif

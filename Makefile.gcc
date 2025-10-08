@@ -1,5 +1,5 @@
-build: donut hash encrypt inject inject_local
-donut: clean
+build: donut hash encrypt
+donut:
 	gcc -Wunused-function -Wall -fpack-struct=8 -DDONUT_EXE -I include donut.c hash.c encrypt.c format.c loader/clib.c lib/aplib64.a -odonut 
 	gcc -Wunused-function -Wall -c -fpack-struct=8 -fPIC -I include donut.c hash.c encrypt.c format.c loader/clib.c 
 	ar rcs lib/libdonut.a donut.o hash.o encrypt.o format.o clib.o lib/aplib64.a
@@ -10,9 +10,9 @@ hash:
 	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include hash.c loader/clib.c -ohash
 encrypt:
 	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include encrypt.c loader/clib.c -oencrypt
-inject:
-	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include loader/inject.c -oinject
-inject_local:
-	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include loader/inject_local.c -oinject_local
+#inject:
+#	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include loader/inject.c -oinject
+#inject_local:
+#	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include loader/inject_local.c -oinject_local
 clean:
 	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.so loader_exe_*
