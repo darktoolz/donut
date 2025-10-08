@@ -3,6 +3,29 @@
 docker pull darktool/donut
 ```
 
+Available binaries:
+- `donut`
+- `exe2h`
+- `go-donut`
+
+Scripting:
+- `python3`
+- `ruby`
+
+Usage:
+```bash
+docker run --rm -it -v .:/workdir darktool/donut -iTEST.exe -o loader.bin
+docker run --rm -it -v .:/workdir --entrypoint go-donut darktool/donut -iTEST.exe -o loader.bin
+```
+
+Recommended:
+```bash
+$ alias donut="docker run --rm -it --read-only --tmpfs /tmp -v .:/workdir darktool/donut"
+$ donut -iTEST.exe -o loader.bin
+```
+
+Most of gh-available patches/pulls applied.
+
 # original README.md
 [![Issues](https://img.shields.io/github/issues/thewover/donut)](https://github.com/TheWover/donut/issues)
 [![Contributors](https://img.shields.io/github/contributors/thewover/donut)](https://github.com/TheWover/donut/graphs/contributors)

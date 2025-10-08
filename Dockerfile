@@ -1,6 +1,6 @@
 ARG SOURCE_DATE_EPOCH=0
 
-FROM debian:testing-slim AS builder
+FROM debian:testing-slim AS sys
 ARG SOURCE_DATE_EPOCH
 
 RUN mkdir -p /workdir
@@ -12,7 +12,7 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y \
       mingw-w64 g++ golang libssl-dev build-essential \
       git make pkg-config automake libtool autotools-dev
 
-FROM builder AS donut
+FROM sys AS builder
 ARG SOURCE_DATE_EPOCH
 
 WORKDIR /opt
@@ -21,9 +21,13 @@ RUN git submodule update --init --recursive
 RUN make -f Makefile.mingw && make -f Makefile.gcc
 RUN cd generators/go-donut && go build -o ../../go-donut
 
-RUN apt-get remove -y git autotools-dev automake autoconf pkg-config
+RUN apt-get remove -y git autotools-dev automake autoconf pkg-config golang
 RUN rm -rf generators .git .github /var/lib/apt /var/cache /var/log/apt /var/log/dpkg* \
-        /var/lib/dpkg* /usr/libexec/dpkg* /usr/share/doc /usr/share/man
+        /var/lib/dpkg* /usr/libexec/dpkg* /usr/share/doc /usr/share/man /var/log/alt* \
+        /root/.cache /root/.config /root/go /usr/lib/go-1.24 /usr/share/go-1.24
+
+FROM builder AS donut
+ARG SOURCE_DATE_EPOCH
 
 WORKDIR /workdir
 ENV PATH=$PATH:/opt
