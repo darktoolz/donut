@@ -19,8 +19,9 @@ WORKDIR /opt
 COPY . .
 RUN git submodule update --init --recursive
 RUN make -f Makefile.mingw && make -f Makefile.gcc
+RUN cd generators/go-donut && go build -o ../../go-donut
 
-RUN apt remove git autotools-dev automake autoconf pkg-config
+RUN apt-get remove -y generators git autotools-dev automake autoconf pkg-config
 RUN rm -rf .git .github /var/lib/apt /var/cache /var/log/apt /var/log/dpkg* \
         /var/lib/dpkg* /usr/libexec/dpkg* /usr/share/doc /usr/share/man
 
