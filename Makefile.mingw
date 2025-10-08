@@ -26,4 +26,4 @@ debug: clean
 	$(CC64) -Wall loader/inject.c -oinject32.exe
 	$(CC32) -Wall loader/inject.c -oinject64.exe
 clean:
-	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.a lib/*.so loader_exe_*
+	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.lib lib/*.a lib/*.so loader_exe_*

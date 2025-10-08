@@ -251,14 +251,15 @@ NuGetBuild
 WiX.Toolset.DummyFile.txt
 GitHubVS.sln.DotSettings
 
-exe2h
 *.exe
 *.bin
-instance
 *.o
+*.a
+*.so
+*.lib
+instance
 hash
 encrypt
 donut
-lib/*.a
-lib/*.so
+exe2h
 loader_exe_*

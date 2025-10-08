@@ -14,4 +14,4 @@ inject:
 inject_local:
 	gcc -Wall -Wno-format -fpack-struct=8 -DTEST -I include loader/inject_local.c -oinject_local
 clean:
-	rm -f loader.exe exe2h.exe exe2h loader32.exe loader64.exe donut.o hash.o encrypt.o format.o clib.o hash encrypt donut hash.exe encrypt.exe donut.exe lib/libdonut.a lib/libdonut.so
+	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.lib lib/*.a lib/*.so loader_exe_*
