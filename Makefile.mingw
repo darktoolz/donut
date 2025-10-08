@@ -16,7 +16,8 @@ donut: clean
 
 	$(CC64) -Wall loader/inject.c -oinject32.exe
 	$(CC32) -Wall loader/inject.c -oinject64.exe
-debug: clean
+
+debug:
 	$(info ###### DEBUG ######)
 	$(CC32) -DCLIB -DBYPASS_AMSI_B -DBYPASS_WLDP_A -DBYPASS_ETW_B -Wno-format -fpack-struct=8 -DDEBUG -I include loader/loader.c hash.c encrypt.c loader/depack.c loader/clib.c loader/syscalls.c -masm=intel -oloader32.exe -lole32 -lshlwapi
 	$(CC64) -DCLIB -DBYPASS_AMSI_B -DBYPASS_WLDP_A -DBYPASS_ETW_B -Wno-format -fpack-struct=8 -DDEBUG -I include loader/loader.c hash.c encrypt.c loader/depack.c loader/clib.c loader/syscalls.c -masm=intel -oloader64.exe -lole32 -lshlwapi
@@ -25,5 +26,6 @@ debug: clean
 	$(CC64) -Wall loader/inject_local.c -oinject_local64.exe
 	$(CC64) -Wall loader/inject.c -oinject32.exe
 	$(CC32) -Wall loader/inject.c -oinject64.exe
+
 clean:
-	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.lib lib/*.a lib/*.so loader_exe_*
+	rm -f exe2h *.exe *.bin instance *.o hash encrypt donut lib/*.so loader_exe_*

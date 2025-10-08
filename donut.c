@@ -41,7 +41,7 @@
  
 // required for each API used by the loader
 #define DLL_NAMES "ole32;oleaut32;wininet;mscoree;shell32"
- 
+
 // These must be in the same order as the DONUT_INSTANCE structure defined in donut.h
 static API_IMPORT api_imports[] = { 
   {KERNEL32_DLL, "LoadLibraryA"},
@@ -2352,4 +2352,3 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 #endif
-

@@ -41,4 +41,4 @@ inject:
 inject_local:
 	cl -Zp8 -nologo -DTEST -I include loader\inject_local.c
 clean:
-	@del /Q *.obj *.exe lib\*.lib lib\*.dll lib\*.exp include\donut
+	@del /Q *.obj *.exe lib\*.dll lib\*.exp include\donut

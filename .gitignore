@@ -254,9 +254,7 @@ GitHubVS.sln.DotSettings
 *.exe
 *.bin
 *.o
-*.a
 *.so
-*.lib
 instance
 hash
 encrypt
