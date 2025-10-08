@@ -254,13 +254,8 @@ typedef struct _DONUT_INSTANCE {
     uint64_t    iv;                           // the 64-bit initial value for maru hash
 
     union {
-<<<<<<< HEAD
-      uint64_t  hash[57];                     // holds up to 57 api hashes
-      void     *addr[57];                     // holds up to 57 api addresses
-=======
       uint64_t  hash[68];                     // holds up to 64 api hashes
       void     *addr[68];                     // holds up to 64 api addresses
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
       // include prototypes only if header included from loader.h
       #ifdef LOADER_H
       struct {
@@ -269,7 +264,7 @@ typedef struct _DONUT_INSTANCE {
         GetProcAddress_t                 GetProcAddress;        
         GetModuleHandleA_t               GetModuleHandleA;  
         VirtualAlloc_t                   VirtualAlloc;     
-        VirtualFree_t                    VirtualFree;  
+        VirtualFree_t                    VirtualFree;
         Sleep_t                          Sleep;
         MultiByteToWideChar_t            MultiByteToWideChar;
         GetUserDefaultLCID_t             GetUserDefaultLCID;
@@ -286,11 +281,8 @@ typedef struct _DONUT_INSTANCE {
         GetProcessHeap_t                 GetProcessHeap;
         HeapFree_t                       HeapFree;
         GetLastError_t                   GetLastError;
-<<<<<<< HEAD
-=======
         CloseHandle_t                    CloseHandle;
         GetSystemInfo_t                  GetSystemInfo;
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
         
         // imports from shell32.dll
         CommandLineToArgvW_t             CommandLineToArgvW;
@@ -338,19 +330,16 @@ typedef struct _DONUT_INSTANCE {
         RtlGetCompressionWorkSpaceSize_t RtlGetCompressionWorkSpaceSize;
         RtlDecompressBuffer_t            RtlDecompressBuffer;
         NtContinue_t                     NtContinue;
-        NtCreateSection_t                NtCreateSection;
-        NtMapViewOfSection_t             NtMapViewOfSection;
-        NtUnmapViewOfSection_t           NtUnmapViewOfSection;
-<<<<<<< HEAD
-        AddVectoredExceptionHandler_t    AddVectoredExceptionHandler;
-        RemoveVectoredExceptionHandler_t RemoveVectoredExceptionHandler;
-=======
+//        NtCreateSection_t                NtCreateSection;
+//        NtMapViewOfSection_t             NtMapViewOfSection;
+//        NtUnmapViewOfSection_t           NtUnmapViewOfSection;
+//        AddVectoredExceptionHandler_t    AddVectoredExceptionHandler;
+//        RemoveVectoredExceptionHandler_t RemoveVectoredExceptionHandler;
         ReadProcessMemory_t              ReadProcessMemory;
         WideCharToMultiByte_t            WideCharToMultiByte;
         FlushInstructionCache_t          FlushInstructionCache;
        // AddVectoredExceptionHandler_t    AddVectoredExceptionHandler;
        // RemoveVectoredExceptionHandler_t RemoveVectoredExceptionHandler;
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
        // RtlFreeUnicodeString_t         RtlFreeUnicodeString;
        // RtlFreeString_t                RtlFreeString;
       };

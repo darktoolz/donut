@@ -65,12 +65,8 @@ static API_IMPORT api_imports[] = {
   {KERNEL32_DLL, "GetProcessHeap"},
   {KERNEL32_DLL, "HeapFree"},
   {KERNEL32_DLL, "GetLastError"},
-<<<<<<< HEAD
-=======
   {KERNEL32_DLL, "CloseHandle"},
   {KERNEL32_DLL, "GetSystemInfo"},
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
-        
   {SHELL32_DLL,  "CommandLineToArgvW"},
   
   {OLEAUT32_DLL, "SafeArrayCreate"},
@@ -114,12 +110,10 @@ static API_IMPORT api_imports[] = {
   {NTDLL_DLL,    "NtCreateSection"},
   {NTDLL_DLL,    "NtMapViewOfSection"},
   {NTDLL_DLL,    "NtUnmapViewOfSection"},
-<<<<<<< HEAD
   {NTDLL_DLL,    "RtlFreeUnicodeString"},
   {NTDLL_DLL,    "RtlFreeString"},
   {KERNEL32_DLL, "AddVectoredExceptionHandler"},
   {KERNEL32_DLL, "RemoveVectoredExceptionHandler"},
-=======
   {KERNEL32_DLL, "ReadProcessMemory"},  
   {KERNEL32_DLL, "WideCharToMultiByte"},
   {KERNEL32_DLL, "FlushInstructionCache"},
@@ -127,8 +121,6 @@ static API_IMPORT api_imports[] = {
   //{KERNEL32_DLL, "RemoveVectoredExceptionHandler"},
   //{NTDLL_DLL,    "RtlFreeUnicodeString"},
   //{NTDLL_DLL,    "RtlFreeString"},
-  
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
   { NULL, NULL }   // last one always contains two NULL pointers
 };
 

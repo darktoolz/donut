@@ -216,8 +216,6 @@
       BOOL                  bInitialState,
       LPCSTR                lpName);
 
-<<<<<<< HEAD
-=======
     typedef BOOL  (WINAPI *CloseHandle_t)(HANDLE hObject);
 
     typedef DWORD (WINAPI *GetModuleFileName_t)(
@@ -226,7 +224,6 @@
       DWORD                 nSize
     );
 
->>>>>>> c16aad1a1add85b861d4fa9dbb736ceb904c5ad3
     typedef BOOL  (WINAPI *SetEvent_t)(HANDLE hEvent);
 
     typedef DWORD (WINAPI *GetCurrentThreadId_t)(VOID);
