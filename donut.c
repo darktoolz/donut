@@ -491,32 +491,33 @@ static int read_file_info(PDONUT_CONFIG c) {
       return DONUT_ERROR_FILE_INVALID;
     }
     DPRINT("Extension is \"%s\"", ext);
-
+    
     // VBScript?
-    if (strcasecmp(ext, ".vbs") == 0) {
-      DPRINT("File is VBS");
+    if (strcasecmp(ext, ".vbs")) {
+      DPRINT("File is VBS. Because \"%s\" == \"%s\"", ext, ".vbs");
       fi.type = DONUT_MODULE_VBS;
       fi.arch = DONUT_ARCH_ANY;
     } else 
     // JScript?
-    if (strcasecmp(ext,  ".js") == 0) {
+    if (strcasecmp(ext,  ".js")) {
       DPRINT("File is JS");
       fi.type = DONUT_MODULE_JS;
       fi.arch = DONUT_ARCH_ANY;
-    } else 
-    // EXE?
-    if (strcasecmp(ext, ".exe") == 0) {
-      DPRINT("File is EXE");
+    } else // EXE?
+    if (strcasecmp(ext, ".exe")) {
+      DPRINT("File is EXE. Because \"%s\" == \"%s\"", ext, ".exe");
       fi.type = DONUT_MODULE_EXE;
     } else
     // DLL?
-    if (strcasecmp(ext, ".dll") == 0) {
-      DPRINT("File is DLL");
+    if (strcasecmp(ext, ".dll")) {
+      DPRINT("File is DLL. Because \"%s\" == \"%s\"", ext, ".dll");
       fi.type = DONUT_MODULE_DLL;
-    } else {
+    } else 
+    {
       DPRINT("Don't recognize file extension.");
       return DONUT_ERROR_FILE_INVALID;
     }
+
     
     DPRINT("Mapping %s into memory", c->input);
     
@@ -2096,6 +2097,9 @@ static int validate_format(opt_arg *arg, void *args) {
       } else
       if(!strcasecmp("hex", str)) {
         arg->u32 = DONUT_FORMAT_HEX;
+      } else
+      if(!strcasecmp("uuid", str)) {
+        arg->u32 = DONUT_FORMAT_UUID;
       }
     }
     // validate
@@ -2108,6 +2112,7 @@ static int validate_format(opt_arg *arg, void *args) {
       case DONUT_FORMAT_POWERSHELL:
       case DONUT_FORMAT_CSHARP:
       case DONUT_FORMAT_HEX:
+      case DONUT_FORMAT_UUID:
         break;
       default: {
         printf("WARNING: Invalid format specified: %"PRId32" -- setting to binary.\n", arg->u32);
@@ -2161,7 +2166,7 @@ static void usage (void) {
     printf("                   -PIC/SHELLCODE OPTIONS-\n\n");    
     printf("       -a,--arch: <arch>,--cpu: <arch>         Target architecture : 1=x86, 2=amd64, 3=x86+amd64(default).\n");
     printf("       -o,--output: <path>                     Output file to save loader. Default is \"loader.bin\"\n");
-    printf("       -f,--format: <format>                   Output format. 1=Binary (default), 2=Base64, 3=C, 4=Ruby, 5=Python, 6=Powershell, 7=C#, 8=Hex\n");
+    printf("       -f,--format: <format>                   Output format. 1=Binary (default), 2=Base64, 3=C, 4=Ruby, 5=Python, 6=Powershell, 7=C#, 8=Hex, 9=UUID\n");
     printf("       -y,--fork: <offset>                     Create a new thread for the loader and continue execution at <offset> relative to the host process's executable.\n");
     printf("       -x,--exit: <action>                     Exit behaviour. 1=Exit thread (default), 2=Exit process, 3=Do not exit or cleanup and block indefinitely\n\n");
     
