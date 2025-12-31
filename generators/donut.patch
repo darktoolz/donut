@@ -2,15 +2,16 @@ diff --git a/donut/donut.go b/donut/donut.go
 index 593e908..9c4163a 100644
 --- a/donut/donut.go
 +++ b/donut/donut.go
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,8 @@
  package donut
  
  import (
 +  "os"
++  "io"
  	"bytes"
  	"encoding/binary"
  	"io/ioutil"
-@@ -74,7 +75,13 @@ func ShellcodeFromFile(filename string, config *DonutConfig) (*bytes.Buffer, err
+@@ -74,7 +75,17 @@ func ShellcodeFromFile(filename string, config *DonutConfig) (*bytes.Buffer, err
  		config.Type = DONUT_MODULE_VBS
  	}
  
@@ -18,7 +19,11 @@ index 593e908..9c4163a 100644
 +  var b []byte
 +  var err error
 +  if filename == "-" {
-+    _, err = os.Stdin.Read(b)
++   bb, e := io.ReadAll(os.Stdin)
++   if e != nil {
++     return nil, e
++   }
++   return ShellcodeFromBytes(bytes.NewBuffer(bb), config)
 +  } else {
 +	  b, err = ioutil.ReadFile(filename)
 +  }
